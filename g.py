@@ -1,11 +1,8 @@
 import subprocess
 
 def apply_lut_and_watermark(input_video, lut_file, watermark_file, output_video):
-    # Construct the ffmpeg command
     command = [
         'ffmpeg',
-        '-hwaccel', 'cuvid',          # Use NVIDIA's hardware acceleration for decoding
-        '-c:v', 'vp9_cuvid',          # Specify VP9 decoding using CUVID
         '-i', input_video,            # Input video file
         '-i', watermark_file,         # Input watermark image
         '-filter_complex', (
@@ -14,14 +11,15 @@ def apply_lut_and_watermark(input_video, lut_file, watermark_file, output_video)
             f"[v1][1:v]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2"  # Overlay watermark
         ),
         '-c:v', 'h264_nvenc',         # Encode using NVIDIA's H.264 encoder
+        '-pix_fmt', 'yuv420p',        # Ensure pixel format compatibility
         '-b:v', '10M',                # Bitrate for the video
         '-preset', 'slow',            # Preset for the encoder (adjust as needed)
-        '-c:a', 'copy',               # Copy audio stream without re-encoding
+        '-c:a', 'aac',                # Encode audio to AAC format
+        '-b:a', '192k',               # Bitrate for audio
         '-y',                         # Overwrite output file without asking
         output_video                  # Output video file
     ]
 
-    # Execute the command
     subprocess.run(command, check=True)
 
 # Example usage

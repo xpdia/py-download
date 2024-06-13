@@ -18,9 +18,9 @@ def apply_lut_and_watermark(input_video, lut_file, watermark_file, output_video)
     subprocess.run(command, check=True)
 
 # Input and output files
-input_video = 'asset/vid.mp4'
-lut_file = 'asset/lut.cube'
-watermark_file = 'asset/wm.png'
+input_video = 'assets/vid.mp4'
+lut_file = 'assets/lut.cube'
+watermark_file = 'assets/wm.png'
 output_video = 'outputxgpu.mp4'
 
 # Apply LUT and watermark
